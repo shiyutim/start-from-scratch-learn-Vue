@@ -1,0 +1,16 @@
+{
+  "name": "start-from-scratch-learn-Vue",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/shiyutim/start-from-scratch-learn-Vue.git",
+  "author": "shiyutim <shiyutim@outlook.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vuepress": "^1.2.0"
+  }
+}
