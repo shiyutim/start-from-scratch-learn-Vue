@@ -16,14 +16,14 @@ module.exports = {
         // path: '/', // 可选的, 应该是一个绝对路径
         collapsable: false, // 可选的, 默认值是 true,
         sidebarDepth: 2, // 可选的, 默认值是 1
-        children: ['/']
+        children: ['/', '/installation/installation.md']
       },
       {
         title: '介绍', // 必要的
         // path: '/', // 可选的, 应该是一个绝对路径
         collapsable: false, // 可选的, 默认值是 true,
         sidebarDepth: 2, // 可选的, 默认值是 1
-        children: ['test.md']
+        children: ['introduce/introduce.md']
       },
       {
         title: '指令',
@@ -32,42 +32,47 @@ module.exports = {
         children: ['/instruct/conditional.md', '/instruct/list.md']
       },
       {
+        title: '事件',
+        collapsable: false,
+        sidebarDepth: 2,
+        children: ['events/v-on.md', 'events/v-bind.md']
+      },
+      {
         title: 'Class与Style',
         collapsable: false,
         sidebarDepth: 2,
-        children: ['class']
+        children: ['class/class.md']
       },
       {
-        title: '事件v-on v-bind',
+        title: '生命周期',
         collapsable: false,
         sidebarDepth: 2,
-        children: ['events']
+        children: ['lifecycle/lifecycle.md']
       },
       {
-        title: '生命周期lifecycle',
+        title: '计算属性',
         collapsable: false,
         sidebarDepth: 2,
-        children: ['lifecycle']
-      },
-
-      {
-        title: '计算属性computed',
-        collapsable: false,
-        sidebarDepth: 2,
-        children: ['computed']
+        children: ['computed/computed.md']
       },
       {
-        title: '侦听器watch',
+        title: '侦听器',
         collapsable: false,
         sidebarDepth: 2,
         children: ['/watch/watch.md']
       },
 
       {
-        title: '组件components',
+        title: '组件',
         collapsable: false,
         sidebarDepth: 2,
-        children: ['components']
+        children: ['components/components.md']
+      },
+      {
+        title: 'axios',
+        collapsable: false,
+        sidebarDepth: 2,
+        children: ['axios/axios.md']
       }
     ]
   }
