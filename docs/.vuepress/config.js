@@ -9,6 +9,7 @@ module.exports = {
   description: 'Just playing around',
   displayAllHeaders: true, // true为显示所有页面的标题链接
   collapsable: false, // false 为导航栏展开
+  bases: '/start-from-scratch-learn-Vue/',
   themeConfig: {
     sidebar: [{
         title: '从零开始学习 Vue', // 必要的
