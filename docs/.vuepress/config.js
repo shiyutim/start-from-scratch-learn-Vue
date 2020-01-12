@@ -35,7 +35,7 @@ module.exports = {
         title: '事件',
         collapsable: false,
         sidebarDepth: 2,
-        children: ['events/v-on.md', 'events/v-bind.md']
+        children: ['events/v-on.md', 'events/v-bind.md', 'events/v-model.md']
       },
       {
         title: 'Class与Style',

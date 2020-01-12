@@ -110,9 +110,7 @@
           isMember: 0 // 0为非会员 1 为会员
         }
       }
-    },
-    methods: {},
-    mounted() {}
+    }
   }
 </script>
 

@@ -45,9 +45,7 @@
 
 :::
 
-### npm/vue-cli
-
-1. npm
+## npm
 
 `npm`是随同`Node.js`一起安装的包管理工具，所以想要使用`npm`，则需要先安装`Node.js`，安装`Node.js`是必不可少的步骤，各位可以先百度一下安装`Node.js`，这里不再赘述。
 
@@ -61,15 +59,29 @@ cmd 打开方式，window 系统下
 - `win+r`，输入 cmd，即可打开 cmd。
 - 按住`shift` -> 点击鼠标右键 -> 选择`在此处打开命令行窗口`即可打开 cmd
 
-npm 的包安装方式为`npm install`，可以简写为`npm i`，输入这两个命令的效果是一样的。记住这个命令，以后会经常使用，不过有时候使用方式会不同，下面讲解`vue-cli`的时候会介绍。
+这里有必要集中进行说明 npm 的常用命令。
 
-2. vue-cli
+- `npm run dev`/`npm run serve` 启动 vue-cli 生成的项目。其中，`npm run dev`为 vue-cli 2.x 版本的命令；`npm run serve`为 vue-cli >=3 以上的版本的命令。
+- `npm run build` 为项目打包命令，一般用于开发完项目后，进行打包，然后使用打包后的文件放在服务器上，就可以访问了。
+- `npm i <name>` 为`npm install <name>`的简写，意为包的下载命令。其中：
+  - `npm install -S <name>` 为`npm install --save <name>`的简写，意为 把包安装在`dependencies`目录下，`dependencies`在 package.json 文件里面可以看到。**这里面存放的包为我们上线使用后需要的包**。
+  - `npm install -D <name>` 为`npm install --save-dev <name>`的简写，意为 把包安装在`devDependencies`目录下，`devDependencies`同样在 package.json 文件里面找到。**这里面存放的包为我们开发写代码时候使用的包，项目上线后不再使用**。
 
-[vue-cli](https://cli.vuejs.org/zh/)，是 vue 官方提供的脚手架，用来**生成完整的 vue 项目**。首先需要**全局安装** vue-cli ，在 cmd 下输入命令`npm install -g @vue/cli`
+**一般情况下**，我们需要使用`npm install -S <name>`的命令来安装一些包，比如： `npm install -S axios` / `npm install -S vue-router` / `npm install -S vue-vuex`
+
+在`package.json`文件里面可以看到这个项目安装的包，一般在下载别人的项目后，需要`npm install`进行安装包，**注意这里不需要写包的名字，直接下载即可**。
+
+## vue-cli
+
+[vue-cli](https://cli.vuejs.org/zh/)，是 vue 官方提供的脚手架，用来**生成完整的 vue 项目**。
 
 同时，vue-cli 2.x 和 以上版本命令有些区别，生成后的内容也有很大区别。这里我**强烈建议大家使用 vue-cli 2.x 来生成项目**，因为 vue-cli 4.x 默认配置生成的项目 eslint 检查比较严格，对于新手不太友好，而 vue-cli 2.x 生成的项目，则相对来说没有那么严格。
 
-下面我们开始生成一个项目，使用`vue create <name>`的形式来生成， `name`为项目名称
+- 使用 vue-cli 4.x
+
+首先需要**全局安装** vue-cli ，在 cmd 下输入命令`npm install -g @vue/cli`
+
+vue-cli 4.x 使用`vue create <name>`的方式来生成， `name`为项目名称
 
 ```js
 vue create test
@@ -94,3 +106,17 @@ $ npm run serve
 即代表着项目初始化完成，按照指示输入上述**输入命令**即可运行服务
 
 默认在浏览器输入`http://localhost:8080/`即可访问项目（这里根据 8080 端口是否被占用而生成不同的端口，各位按照提示访问即可）。
+
+- 使用 vue-cli 2.x
+
+如果想要使用`vue-cli 2.x`生成的项目，根据[官方文档](https://cli.vuejs.org/zh/guide/creating-a-project.html#%E6%8B%89%E5%8F%96-2-x-%E6%A8%A1%E6%9D%BF-%E6%97%A7%E7%89%88%E6%9C%AC)指出:
+
+> Vue CLI >= 3 和旧版使用了相同的 vue 命令，所以 Vue CLI 2 (vue-cli) 被覆盖了。如果你仍然需要使用旧版本的 vue init 功能，你可以全局安装一个桥接工具：
+
+```js
+npm install -g @vue/cli-init
+# `vue init` 的运行效果将会跟 `vue-cli@2.x` 相同
+vue init webpack my-project
+```
+
+vue-cli 2.x 使用 `vue init webpack <name>`的方式来生成，`name`为项目名称。 运行后，一路按`enter`即可。
