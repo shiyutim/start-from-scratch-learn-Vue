@@ -74,6 +74,8 @@ module.exports = {
         sidebarDepth: 2,
         children: ['axios/axios.md']
       }
-    ]
+    ],
+    repo: 'shiyutim/start-from-scratch-learn-Vue',
+    lastUpdated: '上次更新'
   }
 }
