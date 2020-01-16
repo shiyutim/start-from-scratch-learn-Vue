@@ -76,7 +76,7 @@
 - 接着打印 body，能打印出来，但是发现`#app`的 div 里面并没有任何内容，说明**虚拟 dom**还没有渲染出来。
 - 接着调用`test`函数，发现控制台报错了，提示 test 不是一个函数，说明在此不能访问`methods`里面的任何函数。
 
-经过分析，此生命周期为初始化阶段，数据、函数、watch 等事件不能访问到。**此生命周期很少使用**。
+经过分析，此生命周期为初始化阶段，数据、函数、watch 等事件不能访问到。**轻度使用**。
 
 ## created
 
@@ -131,7 +131,7 @@ beforeCreate() {
 - 接着打印 body，跟上面一样，说明此时 dom 还为挂载完成，这里**并不能对 dom 进行任何操作**！！！
 - 最后调用`test`函数，控制台打印出了`test function`，说明在此我们也**能够访问`methods`里面的函数了**！！！
 
-此时我们已经能够访问`data`里面的函数，`methods`里面的方法。还可以使用`watch/props/computed`等方法。**此函数经常使用，需要重点关注**。
+此时我们已经能够访问`data`里面的函数，`methods`里面的方法。还可以使用`watch/props/computed`等方法。**重度使用，需要重点关注**。
 
 ## beforeMount
 
@@ -142,7 +142,7 @@ beforeCreate() {
 <br />
 <img :src="$withBase('/life-3.png')">
 
-从图中可以看出，此时打印出的内容跟`created`里面打印出的内容差不多，因此也可以访问`data/methods/watch`等数据和方法。
+从图中可以看出，此时打印出的内容跟`created`里面打印出的内容差不多，因此也可以访问`data/methods/watch`等数据和方法。**轻度使用**。
 
 ## mounted
 
@@ -153,4 +153,105 @@ beforeCreate() {
 <br />
 <img :src="$withBase('/life-4.png')">
 
-此时能够看到，我们能展开`#app`里面的元素了，并看到`p`标签里面的内容了。说明在`mounted`里面，dom 已经加载完成，我们可以在此对 dom 进行操作。**此函数经常使用，需要重点关注**。
+此时能够看到，我们能展开`#app`里面的元素了，并看到`p`标签里面的内容了。说明在`mounted`里面，dom 已经加载完成，我们可以在此对 dom 进行操作。**重度使用，需要重点关注**。
+
+## beforeUpdate
+
+> 数据更新时调用，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。
+
+- 数据更新时调用
+
+说明**数据已经更新了**。
+
+- 发生在虚拟 dom 打补丁之前
+
+虚拟 dom 打补丁之前，也就是说，在 dom 修改之前，说明页面还没有更新。这里解释一下为什么叫*打补丁*，因为 vue 采用虚拟 dom，并且采用优化算法，对比新旧`Vnode`（虚拟 dom），只修改 **改变的部分**。所以，如果我们只更改了部分值，那么只会更新页面的一部分。这也是 使用 Vue 构建的页面 显得特别快的原因。
+
+还是通过断点调试，为了更好的观察 dom 发生的变化，设置了一个`test`方法，用来改变`message`的值。在`<script>`中加入如下代码：
+
+::: tip 提示
+
+记住，这些生命周期**函数**是属于同级别“地位”，所以他们应该并列的放在一起，并使用`,`分隔。那么此时，在`<script>`标签下，大概有如下“结构”：
+
+```js
+export default {
+  data() {}
+  methods: {},
+  beforeCreate() {},
+  created() {},
+  beforeMount() {},
+  mounted() {}
+}
+```
+
+:::
+
+```html
+<div class="container">
+  <p>{{message}}</p>
+  <button @click="test">reverse</button>
+</div>
+```
+
+```js
+beforeUpdate() {
+    console.log('beforeUpdate')
+    console.log(this.message, 'message')
+    let body = document.querySelector('body')
+    console.log(body, 'body')
+    console.log(this)  // `this`代表 Vue 实例
+    debugger
+  }
+
+  methods: {
+    test() {
+      this.message = this.message
+        .split('')
+        .reverse()
+        .join('')
+    }
+  }
+```
+
+初始化好后，我们点击`reverse`按钮，触发`test`函数，改变`data`里面`message`的值，控制台信息如下图所示：
+
+<img :src="$withBase('/life-5.png')" />
+<br />
+<img :src="$withBase('/life-6.png')" />
+
+以上信息说明：
+
+- 首先，打印`beforeUpdate`表示进入`beforeUpdate`生命周期
+- 接着打印`message`的值为：`euV olleh`，发现值已经是**更新后的值**。说明在此 值已经被更新。
+- 接着展开 body，发现`<p>`里面的值为`Hello Vue`。说明虽然`data`里面的值已经更新，但是真实的 dom 中，值并没有被更新
+- 最后一条是打印的`this`，`this`指向 Vue 实例，可以看到红色箭头指向`message`的值，是更新后的值。因为`data`和`methods`里面的所有方法都会被挂载在 Vue 实例上，所以我们可以通过`this.xxx`获取到对应的值或方法。
+
+最后一张图片是断点时 dom 中的显示情况，可以看到在`beforeUpdate`的时候，真实 dom 里面的值没有更新。**轻度使用**。
+
+## updated
+
+> 由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。然而在大多数情况下，你应该避免在此期间更改状态。如果要相应状态改变，通常最好使用计算属性或 watcher 取而代之。
+
+官方文档说的很清楚了，总结如下：数据更改导致虚拟 dom 重新渲染，组件 dom 已经更新，可以执行对应的 dom 操作。在大多数情况下，应该避免在此期间更改状态。应该使用计算属性(computed)和 watcher`watch`。
+
+继续测试，在`<script>`添加如下代码：
+
+```js
+updated() {
+    console.log('updated')
+    console.log(this.message, 'message')
+    let body = document.querySelector('body')
+    console.log(body, 'body')
+    console.log(this)
+  }
+```
+
+点击`reverse`按钮后，控制台打印如下图所示：
+
+<img :src="$withBase('/life-7.png')" />
+
+此时可以看到，dom 已经更新。**轻度使用**。
+
+## beforeDestroy
+
+> 实例销毁之前调用。在这一步，实例仍然完全可用。
