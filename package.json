@@ -10,7 +10,9 @@
     "docs:build": "vuepress build docs",
     "deploy": "bash deploy.sh"
   },
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.19.1"
+  },
   "devDependencies": {
     "vuepress": "^1.2.0"
   }

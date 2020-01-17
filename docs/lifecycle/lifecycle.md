@@ -255,3 +255,123 @@ updated() {
 ## beforeDestroy
 
 > 实例销毁之前调用。在这一步，实例仍然完全可用。
+
+组件销毁前或离开页面后，调用这个函数。**轻度使用**。
+
+## destroyed
+
+> 实例销毁后调用。该钩子被调用后，对应 Vue 实例的所有指令都被解绑，所有的事件监听器被移除，所有的子实例也都被销毁。
+
+组件销毁后或页面离开之后，调用这个函数。Vue 中的所有绑定的事件监听都会被销毁，如：watch、computed 等。
+
+除了 Vue 中会自动销毁一些事件监听外，还需要我们自己手动移除监听器，比如:
+
+- 使用`document.addEventListener`添加的监听器
+- 使用 setInterval 设置的定时器
+
+我们初始化一个组件（关于组件会在后面细说），并在这个组件内设置一个定时器，并使用一个按钮来销毁这个组件：
+
+```html
+<template>
+  <div class="container">
+    <component-a v-if="toggleComponent"></component-a>
+    <button @click="toggleComponent = !toggleComponent">toggle</button>
+  </div>
+</template>
+
+<script>
+  import Vue from 'vue'
+
+  Vue.component('component-a', {
+    template: `
+      <div>Component-a</div>
+    `,
+    methods: {
+      interval() {
+        setInterval(() => {
+          console.log('1')
+        }, 1000)
+      }
+    },
+    mounted() {
+      this.interval()
+    },
+    beforeDestroy() {
+      console.log('component beforeDestroy')
+    },
+    destroyed() {
+      console.log('component destroyed')
+    }
+  })
+
+  export default {
+    data() {
+      return {
+        toggleComponent: true
+      }
+    }
+  }
+</script>
+```
+
+`@click="toggleComponent = !toggleComponent"` 表示把`toggleComponent`这个变量取反并赋值给他自己。为`true`取反后就为`false`。最后的效果就是点击后可以来回切换显示或隐藏。
+
+在进入页面后，在`mounted`里面调用定时器函数，发现控制台开始打印`1`。同时页面如下，`component-a`组件存在。
+<br />
+<img :src="$withBase('/life-8.png')" />
+<br />
+<br />
+<img :src="$withBase('/life-9.png')" />
+
+当我们点击`toggle`按钮后，控制台打印如下：
+
+<br />
+<img :src="$withBase('/life-10.png')" />
+<br />
+<br />
+<img :src="$withBase('/life-11.png')" />
+
+发现虽然已经调用`destroyed`了，但是控制台还是能够打印`1`，说明定时器并没有被销毁。所以，使用`setInterval`需要我们自己手动清除。
+
+清除定时器，大家都知道，如果是`setTimeout`，我们使用`clearTimeout`；如果是`setInterval`，我们使用`clearInterval`。所以，我们应该使用`clearInterval()`并且加在`beforeDestroyed`或者`destroyed`里面。但是还有一个问题，就是清除哪个定时器，所以我们还需要把这个定时器赋值给一个变量：
+
+```js
+interval() {
+  let timer = setInterval(() => {
+    console.log('1')
+  }, 1000)
+}
+
+destroyed() {
+  clearInterval(timer)
+  console.log('component destroyed')
+}
+```
+
+这样可以吗？你可以试一下，保证报错。因为函数作用域的问题，我们在**外部是无法访问到函数内部的变量的**。所以，在`destroyed`里面是访问不到 timer 的。聪明的你一定想到了，我们可以在`data`里面初始化一个变量`timer`，然后在定时器里面进行赋值，最后在`destroyed`里面进行销毁。让我们试一下：
+
+```js
+data () {
+  return {
+    message: 'hello Vue',
+    timer: null
+  }
+}
+
+interval() {
+  this.timer = setInterval(() => {
+    console.log('1')
+  }, 1000)
+}
+
+
+destroyed() {
+  clearInterval(this.timer)
+  console.log('component destroyed')
+}
+```
+
+访问`data`里面的变量，我们需要使用`this.xxx`的方式，所以我们通过`this.timer`进行赋值和销毁。现在从新加载页面，并点击`toggle`，控制台不会再打印`1`了，说明我们销毁定时器成功了。
+
+官方文档里面还有关于`destroyed`的使用例子，[点击这里](https://cn.vuejs.org/v2/cookbook/avoiding-memory-leaks.html)访问。
+**轻度使用**。
