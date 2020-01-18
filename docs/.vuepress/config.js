@@ -66,7 +66,7 @@ module.exports = {
         title: '组件',
         collapsable: false,
         sidebarDepth: 2,
-        children: ['components/components.md']
+        children: ['components/components.md', 'components/props.md', 'components/emit.md']
       },
       {
         title: 'axios',

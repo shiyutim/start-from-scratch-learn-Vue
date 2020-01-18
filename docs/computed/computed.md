@@ -156,7 +156,7 @@ computed: {
 </style>
 ```
 
-<computeds-example1 />
+<computeds-example1-1 />
 
 如果你复制上去后，发现页面渲染出来数据了，很棒是不是，这就是真实的接口+数据渲染方式。除了没有完善的错误处理和样式等:hugs:，不过暂时先不考虑。
 
@@ -225,7 +225,7 @@ new_priceList() {
 
 `sort`方法可以接收一个函数，如果返回值为负数，说明第一个值应该在第二个值前面，即第一个值小于第二个值。所以，返回后的数组为升序。
 
-<computeds-example2 />
+<computeds-example1-2 />
 
 可以看到，现在的新数组已经是排序后的数组了。不过，我们需要的智能排序，需要我们手动点击升序或降序。那么就需要一个**值**来控制一下，到底是升序还是降序。
 
@@ -255,7 +255,7 @@ computed: {
 
 ```
 
-<computeds-example3 />
+<computeds-example1-3 />
 
 现在我们可以点击升序或降序按钮，可以控制商品的排序了。那么我们来解释一下最后一步的操作：
 
@@ -281,3 +281,147 @@ computed: {
 到这里基本就讲完了一个排序小例子，看完后，记得自己重新实践一下。如果还没有理解到位，那么请看下面的另一个小例子。
 
 ### 商品搜索
+
+一般来说，搜索是通过 http 请求，来跟后台进行交互，然后只渲染后台返回过来筛选后的数据就可以了。不过，我们通过计算属性也可以做到筛选功能，而且更快，更高效。唯一的缺点就是，如果有分页，那么搜索只会搜索到当前页的数据，而通过 http 请求，后台会把所有关于搜索的数据发送过来。
+
+商品搜索，那么需要通过商品标题进行搜索，返回标题中带有搜索关键字的商品就可以了。我们通过`includes`或者`indexOf`实现这个功能。还需要一个方法来遍历数组，并返回一个新数组，大家可以先思考一下使用哪个方法。
+
+```html
+<template>
+  <div class="wrap">
+    <div class="tools">
+      <input type="text" v-model="search" />
+    </div>
+    <section class="commodity">
+      <div class="item" v-for="(item, index) in new_titleList" :key="index">
+        <div>
+          <img :src="item.thumb" alt class="item_img" />
+        </div>
+        <div>
+          <p>{{ item.title }}</p>
+        </div>
+        <div>
+          <p>销量： {{ item.sales }}</p>
+          <p>价格： {{ item.price }}</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        list: [],
+        search: ''
+      }
+    },
+    computed: {
+      new_titleList() {
+        return this.list
+      }
+    },
+    methods: {
+      initData() {
+        axios
+          .get(
+            'https://easy-mock.com/mock/5e1aa4ff7f109b0caa4d2e26/learnvue/commodity'
+          )
+          .then(res => {
+            let data = res.data.data
+            console.log(data, 'data')
+            this.list = data.list
+          })
+      }
+    },
+    created() {
+      this.initData()
+    },
+    mounted() {},
+    updated() {},
+    destroyed() {}
+  }
+</script>
+
+<style scoped>
+  .commodity {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .item {
+    margin: 10px;
+    width: 200px;
+  }
+  .item_img {
+    width: 100px;
+    height: 100px;
+  }
+</style>
+```
+
+<computeds-example2-1 />
+
+还记得`v-model`吗？本例就通过`v-model`把`input`绑定到变量`search`上。那么，我们输入的任何值，都在`search`变量上找到。
+
+还是跟以前一样，第一步先初始化一个`new_titleList`的计算属性，表示这是一个新的数组。并把`v-for`里面的`list`替换为`new_titleList`。接着，我们就开始具体的搜索逻辑
+
+```js
+  computed: {
+    new_titleList() {
+      if (this.search === '') {
+        return this.list
+      }
+
+      let arr = this.list.filter(item => {
+        return item.title.indexOf(this.search) > -1
+      })
+      return arr
+    }
+  },
+```
+
+- `if (this.search === '') { return this.list }`
+
+  这一步什么意思呢，它表示，如果搜索内容为空的话，就返回默认的数组。可以写成这种形式：
+
+  ```js
+  if (!this.search) return this.list
+  ```
+
+- 接下来就是遍历数组，然后返回标题中带有搜索关键字的商品了，这里我们选择`filter`，因为`filter`能够**返回一个新数组**。所以，`arr`就代表着过滤后的数组，返回它即可。下面我们来看具体的过滤逻辑
+
+  ```js
+  this.list.filter(item => {
+    return item.title.includes(this.search)
+  })
+  ```
+
+  - 上面的`item`同样代表 list 里面的每一项
+  - `item.title`就是我们要过滤的标题了
+  - `this.search`就是用户输入过滤的关键字
+  - 我们通过 js 的`includes`方法对标题进行过滤，表示**如果标题中含有搜索关键字，那么就返回这一项**。这一步可以写成
+
+    ```js
+    return item.title.includes(this.search)
+    ```
+
+  - 还有一点，我们可以完善一下，就是`let arr`这一步，因为我们知道，`arr`里面存放的就是过滤后的数组，那么我们为何不省略这一步把`let arr`换成 `return`呢
+
+经过以上分析，我们可以把上面代码优化成：
+
+```js
+  computed: {
+    new_titleList() {
+        if(!this.search )return this.list
+
+        return this.list.filter(item => {
+            return item.title.includes(this.search)
+        })
+    }
+  },
+```
+
+相信大家经过以上两个小例子能够对计算属性有了一个深入的了解，计算属性应用非常广泛，大家应该重点掌握。
