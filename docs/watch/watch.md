@@ -42,7 +42,7 @@ computed: {
 
 比如说，`count`初始化为 0, 那么我们把`count = 1`。此时，`newValue`为 1，`oldValue`为 0。
 
-- 使用*方法*（deep）
+- 使用*方法*
 
 ```js
 methods: {
@@ -59,7 +59,7 @@ computed: {
 
 这种方式和上面是同样的效果。
 
-- 使用`handler`
+- 使用`handler`（deep）
 
 ```js
 computed:{
