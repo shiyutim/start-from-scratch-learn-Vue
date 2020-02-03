@@ -1,8 +1,10 @@
 # 其他指令
 
-前面已经介绍了比较重要且常用的指令，剩下的一些指令在这里简单的说一下。
-
 [[toc]]
+
+## 介绍
+
+前面已经介绍了比较重要且常用的指令，剩下的指令在这里简单的介绍一下。
 
 ## v-text
 
@@ -89,8 +91,12 @@ msg: `<span style="fontSize: 20px;">Hello V-html</span>`
 
 ## v-pre
 
-跳过这个元素和它的子元素的编译过程。可以用来显示原始 Mustache 标签。跳过大量没有指令的节点会加快编译。
+跳过这个元素和它的子元素的编译过程。可以用来显示原始 Mustache 标签，跳过大量没有指令的节点会加快编译。
 
 ```html
 <span v-pre>{{ this will not be compiled }}</span>
 ```
+
+---
+
+<a href="javascript:history.go(-1)">返回上一页</a>

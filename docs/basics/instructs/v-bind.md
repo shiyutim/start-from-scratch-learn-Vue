@@ -4,9 +4,9 @@
 
 ## 介绍
 
-`v-bind`命令用于动态的绑定一个或多个特性。比如说表达式，还记得我们在使用`v-for`的时候，在`key`的前面添加了一个`:`了吗，这个`:`就是`v-bind:`的简写方式。`v-bind:key="index"`，简写为`:key="index"`
+`v-bind`指令用于动态的绑定一个或多个特性。比如说表达式，还记得我们在使用`v-for`的时候，在`key`的前面添加了一个`:`了吗，这个`:`就是`v-bind:`的简写方式。`v-bind:key="index"`，简写为`:key="index"`
 
-## 调用方法
+## v-bind
 
 调用方法就是在一个属性前面添加`v-bind:`或者`:`。以后我们都简写为`:`。
 例子：
@@ -84,8 +84,8 @@
 
 ### 遍历渲染一组图片
 
-一般来说，在渲染一组图片的时候，我们是通过`v-for`来进行遍历渲染的，搭配`v-bind`就能实现 动态的给`<img>`绑定 url
-这里给大家提供一组真实的图片链接，是通过我写的[小爬虫](https://github.com/shiyutim/crawler)爬取的。接口地址为: `https://easy-mock.com/mock/5e1aa4ff7f109b0caa4d2e26/learnvue/imglist`
+一般来说，在渲染一组图片的时候，我们是通过`v-for`来进行遍历渲染的，搭配`v-bind`就能实现 动态的给`<img>`绑定 url。
+这里给大家提供一组真实的图片链接，是通过我写的[小爬虫](https://github.com/shiyutim/crawler)爬取的。接口地址为: `https://easy-mock.com/mock/5e1aa4ff7f109b0caa4d2e26/learnvue/imglist`。
 
 首先，我们进行如下初始化页面模板：
 
@@ -111,7 +111,7 @@
 <style scoped lang=""></style>
 ```
 
-进行如上初始化后，我们开始写业务代码，首先是获取接口，获取到数据后，存入`data`里面的`imgList`，然后通过遍历`imgList`数组，把值“绑定”给 img 的 src。
+进行如上初始化后，先是通过接口获取到数据后，存入`data`里面的`imgList`，然后通过遍历`imgList`数组，把值“绑定”给 img 的 src 属性。
 
 ```html
 <template>
@@ -167,4 +167,8 @@
 - 通过`:src="item"` 把这个数组的每一项（即每一个 url）动态的绑定到 src 上，完整写法为`v-bind:src="item"`。
 - `:key="index"`给每一个图片标识一个`key`属性，值为当前项的索引（即 0/1/2/3 ...），完整写法为`v-bind:key="index"`。
 
-通过以上代码，运行项目后，就会看到页面上出现了许多图片。
+运行以上代码后，就会看到页面上出现了许多图片。
+
+---
+
+<a href="javascript:history.go(-1)">返回上一页</a>

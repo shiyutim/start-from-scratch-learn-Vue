@@ -12,68 +12,30 @@ module.exports = {
   base: '/start-from-scratch-learn-Vue/',
   themeConfig: {
     sidebar: [{
-        title: '从零开始学习 Vue', // 必要的
+        title: '前言', // 必要的
         // path: '/', // 可选的, 应该是一个绝对路径
         collapsable: false, // 可选的, 默认值是 true,
         sidebarDepth: 2, // 可选的, 默认值是 1
-        children: ['/', '/installation/installation.md']
+        children: ['/']
       },
       {
-        title: '介绍', // 必要的
-        // path: '/', // 可选的, 应该是一个绝对路径
-        collapsable: false, // 可选的, 默认值是 true,
-        sidebarDepth: 2, // 可选的, 默认值是 1
-        children: ['introduce/introduce.md']
+        title: '简介',
+        collapsable: false,
+        sidebarDepth: 1,
+        children: ['introduction/installation.md', 'introduction/introduce.md']
       },
       {
-        title: '指令',
+        title: '入门篇',
         collapsable: false,
         sidebarDepth: 2,
-        children: ['/instruct/conditional.md', '/instruct/list.md']
+        children: ['basics/instruct.md', 'basics/class-and-style.md', 'basics/lifecycle.md', 'basics/computed.md', 'basics/watch.md']
       },
       {
-        title: '事件',
+        title: '进阶篇',
         collapsable: false,
         sidebarDepth: 2,
-        children: ['events/v-on.md', 'events/v-bind.md', 'events/v-model.md', 'events/others.md']
+        children: ['advanced/components.md', 'advanced/filters.md', 'advanced/axios.md']
       },
-      {
-        title: 'Class与Style',
-        collapsable: false,
-        sidebarDepth: 2,
-        children: ['class/class.md']
-      },
-      {
-        title: '生命周期',
-        collapsable: false,
-        sidebarDepth: 2,
-        children: ['lifecycle/lifecycle.md']
-      },
-      {
-        title: '计算属性',
-        collapsable: false,
-        sidebarDepth: 2,
-        children: ['computed/computed.md']
-      },
-      {
-        title: '侦听器',
-        collapsable: false,
-        sidebarDepth: 2,
-        children: ['/watch/watch.md']
-      },
-
-      {
-        title: '组件',
-        collapsable: false,
-        sidebarDepth: 2,
-        children: ['components/components.md', 'components/props.md', 'components/emit.md']
-      },
-      {
-        title: 'axios',
-        collapsable: false,
-        sidebarDepth: 2,
-        children: ['axios/axios.md']
-      }
     ],
     repo: 'shiyutim/start-from-scratch-learn-Vue',
     lastUpdated: '上次更新'
